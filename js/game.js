@@ -112,7 +112,10 @@ function resetGame() {
 askBtn.addEventListener('click', revealMisfortune);
 
 questionInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') revealMisfortune();
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    revealMisfortune();
+  }
 });
 
 againBtn.addEventListener('click', resetGame);
