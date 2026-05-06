@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MisfortuneTelling</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1 class="title">&#x1F52E; MisfortuneTelling</h1>
+      <p class="subtitle">The crystal ball sees only darkness ahead&hellip;</p>
+    </header>
+
+    <main>
+      <section id="intro" class="screen active">
+        <p class="flavour-text">
+          Peer into the void. Ask your question. Receive your fate.
+        </p>
+        <label for="question-input" class="sr-only">Your question</label>
+        <input
+          id="question-input"
+          type="text"
+          placeholder="What does the future hold for you?"
+          maxlength="120"
+          autocomplete="off"
+        />
+        <button id="ask-btn" class="btn-primary">Reveal My Misfortune</button>
+      </section>
+
+      <section id="result" class="screen" aria-live="polite">
+        <div id="crystal-ball">
+          <div id="ball-inner">
+            <span id="symbol" aria-hidden="true">&#x1F52E;</span>
+          </div>
+        </div>
+        <blockquote id="misfortune-text"></blockquote>
+        <p id="question-echo" class="question-echo"></p>
+        <button id="again-btn" class="btn-secondary">Ask Again</button>
+      </section>
+    </main>
+
+    <footer>
+      <p>All misfortunes are fictional &mdash; probably.</p>
+    </footer>
+  </div>
+
+  <script src="js/game.js"></script>
+</body>
+</html>

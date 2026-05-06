@@ -1,0 +1,245 @@
+/* ── Reset & base ─────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:          #0d0d1a;
+  --surface:     #14142a;
+  --accent:      #7b2fff;
+  --accent-glow: #9d5fff;
+  --text:        #e8e0f0;
+  --muted:       #7a7090;
+  --ball-bg:     radial-gradient(circle at 38% 35%, #2e1b6e 0%, #0a0515 70%);
+  --ball-glow:   0 0 60px 20px rgba(123, 47, 255, 0.45);
+  --radius:      0.75rem;
+  --transition:  0.35s ease;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Georgia', serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100%;
+  padding: 2rem 1rem;
+}
+
+/* ── Utility ──────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── App shell ────────────────────────────────────────────────────── */
+#app {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* ── Header ───────────────────────────────────────────────────────── */
+header {
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(2rem, 6vw, 3rem);
+  letter-spacing: 0.04em;
+  color: var(--accent-glow);
+  text-shadow: 0 0 24px rgba(157, 95, 255, 0.7);
+}
+
+.subtitle {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 1rem;
+}
+
+/* ── Screens ──────────────────────────────────────────────────────── */
+.screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--surface);
+  border: 1px solid rgba(123, 47, 255, 0.25);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* ── Intro screen ─────────────────────────────────────────────────── */
+.flavour-text {
+  font-style: italic;
+  color: var(--muted);
+  text-align: center;
+  font-size: 1.05rem;
+}
+
+#question-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(123, 47, 255, 0.4);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 1rem;
+  font-family: inherit;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+#question-input::placeholder {
+  color: var(--muted);
+}
+
+#question-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(123, 47, 255, 0.25);
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────── */
+.btn-primary,
+.btn-secondary {
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-family: inherit;
+  padding: 0.75rem 2rem;
+  transition: filter var(--transition), transform var(--transition);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 18px rgba(123, 47, 255, 0.5);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  filter: brightness(1.2);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent-glow);
+  border: 1px solid var(--accent);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  background: rgba(123, 47, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* ── Crystal ball ─────────────────────────────────────────────────── */
+#crystal-ball {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: var(--ball-bg);
+  box-shadow: var(--ball-glow), inset 0 0 30px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+#crystal-ball::after {
+  content: '';
+  position: absolute;
+  top: 12%;
+  left: 18%;
+  width: 30%;
+  height: 20%;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  transform: rotate(-25deg);
+  pointer-events: none;
+}
+
+#symbol {
+  font-size: 4rem;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%       { transform: scale(1.1); opacity: 0.8; }
+}
+
+/* ── Misfortune text ──────────────────────────────────────────────── */
+#misfortune-text {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  font-style: italic;
+  text-align: center;
+  color: var(--text);
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  line-height: 1.7;
+}
+
+.question-echo {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+  text-align: center;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────── */
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+  padding-bottom: 1rem;
+}
+
+/* ── Animations ───────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.screen.active {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 420px) {
+  #crystal-ball {
+    width: 140px;
+    height: 140px;
+  }
+
+  #symbol {
+    font-size: 3rem;
+  }
+
+  .screen {
+    padding: 1.5rem 1rem;
+  }
+}
