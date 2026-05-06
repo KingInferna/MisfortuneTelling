@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MisFortuneTelling - Archive Build</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="menuScreen">
+  <div class="menuBox">
+    <div class="menuTitle">MisFortuneTelling</div>
+    <div class="menuSubtitle" id="menuWhisper">“Every prophecy demands payment.”</div>
+    <div class="menuCards">
+      <div class="menuCard" onclick="showRunIntro()"><h3>The Fool</h3><p>Begin Reading</p><p class="small">Sit at the table and draw the first omen.</p></div>
+      <div class="menuCard" onclick="returnToTable()"><h3>The Wheel</h3><p>Return To The Table</p><p class="small" id="continueHint">No unfinished reading remains.</p></div>
+      <div class="menuCard" onclick="openArchive()"><h3>The Hierophant</h3><p>Archive</p><p class="small">Cards, enemies, statuses, relics, and curios currently known.</p></div>
+      <div class="menuCard" onclick="openSettings()"><h3>The Hermit</h3><p>Settings</p><p class="small">The room is silent for now.</p></div>
+    </div>
+<div class="menuFooter"><span id="saveWhisper">The table is empty.</span><br>A cursed card roguelike prototype</div>
+  </div>
+</div>
+<div id="runIntroScreen">
+  <div class="introBox">
+    <div class="introSigil"></div>
+    <div class="introText">The cards awaken.</div>
+    <p class="small">HP: 24 · Deck: 10 · Misfortunes: 0</p>
+    <div class="introStats"><span class="introStat">Read</span><span class="introStat">Interpret</span><span class="introStat">Prophesy</span></div>
+    <button onclick="beginReading()">Sit At The Table</button>
+    <button onclick="backToMenu()">Return</button>
+  </div>
+</div>
+
+<div id="app" class="hiddenApp">
+<div class="title">MisFortuneTelling</div>
+<div id="roadmap" class="roadmap"></div>
+<div class="grid">
+<div class="panel"><h2>You</h2><div class="statline"><span>HP</span><b id="hpText"></b></div><div class="bar"><div class="fill" id="hpBar"></div></div><div class="statline"><span>Block</span><b id="blockText"></b></div><div class="statline"><span>Draw / Discard</span><b id="deckText"></b></div><div class="statline"><span>Forced Interpret</span><b id="forcedText"></b></div><div class="statline"><span>Insight</span><b id="insightText"></b></div><h3>Status</h3><div id="playerStatus" class="statuses"></div><p class="small">Tap a status badge for explanation. Clarity shows Prophecy discounts.</p></div>
+<div class="panel seerPanel"><div class="seer"></div><div id="dialogue">“The cards have been waiting for your hands.”</div><div class="table"></div></div>
+<div class="panel"><h2 id="enemyName"></h2><div class="statline"><span>HP</span><b id="enemyHpText"></b></div><div class="bar"><div class="fill enemyFill" id="enemyHpBar"></div></div><div class="statline"><span>Intent</span><b id="intentText"></b></div><div class="passiveBox"><div class="passiveTitle">Passive</div><div id="enemyPassive" class="passiveText">None</div></div><h3>Status</h3><div id="enemyStatus" class="statuses"></div><p class="small" id="enemyDesc"></p></div>
+</div>
+<div class="phase">
+<div class="panel"><h2 id="phaseTitle">Battle</h2><div id="helpText" class="small"></div><div class="controls sticky"><button id="readingBtn">Reading</button><button id="prophecyBtn">Prophecy</button><button id="interpretBtn">Interpret</button><button id="endBtn">End Turn</button><button id="restartBtn">Leave Table</button></div><h3>Hand</h3><div id="hand" class="hand"></div><h3>Choices</h3><div id="choices" class="choices"></div></div>
+<div class="panel"><h2>Relics</h2><div id="relics" class="relics"></div><h2>Curios</h2><div id="curios" class="curioTray"></div><h2>Reading Table</h2><div id="slots" class="slots"></div><h3>Record</h3><div id="log" class="log"></div></div>
+</div>
+</div>
+
+<div id="archiveScreen" class="archiveScreen hidden">
+  <div class="panel" style="max-width:1050px;margin:0 auto;">
+    <h2 style="text-align:center;font-size:34px;">Archive</h2>
+    <p class="small" style="text-align:center;">Records of the cards, enemies, statuses, relics, and curios currently known to the table.</p>
+    <div class="archiveTabs">
+      <button onclick="renderArchive('cards')">Cards</button>
+      <button onclick="renderArchive('enemies')">Enemies</button>
+      <button onclick="renderArchive('statuses')">Statuses</button>
+      <button onclick="renderArchive('relics')">Relics</button>
+      <button onclick="renderArchive('curios')">Curios</button>
+      <button onclick="closeArchive()">Back</button>
+    </div>
+    <div id="archiveContent" class="archiveGrid"></div>
+  </div>
+</div>
+
+<div id="settingsScreen" class="settingsScreen hidden">
+  <div class="settingsBox">
+    <h2 style="text-align:center;font-size:34px;">Settings</h2>
+    <p class="small" style="text-align:center;">Adjust the table without disturbing the reading.</p>
+
+    <div class="settingRow">
+      <div class="settingLabel"><b>Host Tutorial</b><span>Show the Host's tutorial after sitting at the table.</span></div>
+      <button class="settingToggle" id="tutorialSettingBtn" onclick="toggleSetting('tutorial')">On</button>
+    </div>
+
+    <div class="settingRow">
+      <div class="settingLabel"><b>Reduced Motion</b><span>Disable menu drifting and transition animations.</span></div>
+      <button class="settingToggle" id="motionSettingBtn" onclick="toggleSetting('reducedMotion')">Off</button>
+    </div>
+
+    <div class="settingRow">
+      <div class="settingLabel"><b>Larger Text</b><span>Slightly increases card, archive, and log readability.</span></div>
+      <button class="settingToggle" id="largeTextSettingBtn" onclick="toggleSetting('largeText')">Off</button>
+    </div>
+
+    <div class="settingRow">
+      <div class="settingLabel"><b>Reset Settings</b><span>Return settings to default values.</span></div>
+      <button onclick="resetSettings()">Reset</button>
+    </div>
+
+
+    <div class="settingRow">
+      <div class="settingLabel"><b>Burn The Reading</b><span>Abandon the current suspended run. This cannot be undone.</span></div>
+      <button onclick="abandonReading()">Burn</button>
+    </div>
+
+    <div style="display:flex;justify-content:center;margin-top:16px;">
+      <button onclick="closeSettings()">Back</button>
+    </div>
+  </div>
+</div>
+
+<div id="popup" onclick="hideInfo()"><div id="popupBox" onclick="event.stopPropagation()"><div id="popupTitle"></div><div id="popupText"></div><br><button onclick="hideInfo()">Close</button></div></div>
+
+<div id="tutorialOverlay" class="tutorialOverlay">
+  <div class="tutorialBox">
+    <div class="tutorialName">The Host</div>
+    <div id="tutorialText" class="tutorialText"></div>
+    <div class="tutorialButtons">
+      <button id="tutorialSkipBtn">Silence</button>
+      <button id="tutorialNextBtn">Continue</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
